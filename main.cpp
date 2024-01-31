@@ -230,27 +230,34 @@ public:
             cout << "Error: El usuario no está conectado o no existe." << endl;
         }
     }
-    void RealizarTransferencia(Banco &bancoBeneficiario, int cedulaOrigen, string tipoCuenta, string numeroCuenta, int montoTransferir) {
+    void RealizarTransferencia(Banco &bancoBeneficiario, int cedulaOrigen, string tipoCuenta, string numeroCuenta, int montoTransferir)
+    {
         Usuarios *beneficiario = bancoBeneficiario.getClientePorTipoNumero(tipoCuenta, numeroCuenta); // Buscar beneficiario en el banco del beneficiario
-        Usuarios *usuarioEnvia = getClientePorCedula(cedulaOrigen); // Buscar el remitente en el banco actual
+        Usuarios *usuarioEnvia = getClientePorCedula(cedulaOrigen);                                   // Buscar el remitente en el banco actual
 
-        if (usuarioEnvia != nullptr && usuarioEnvia->EstaConectado() && beneficiario != nullptr) {
+        if (usuarioEnvia != nullptr && usuarioEnvia->EstaConectado() && beneficiario != nullptr)
+        {
             // Creación de la transacción
             Transaccion nuevaTransaccion(to_string(ListaTransacciones.size() + 1), montoTransferir, "Transferencia");
 
             // Realizar la transferencia
-            if (usuarioEnvia->getCuentaCliente().Retirar(montoTransferir)) {
+            if (usuarioEnvia->getCuentaCliente().Retirar(montoTransferir))
+            {
                 beneficiario->getCuentaCliente().Depositar(montoTransferir);
                 cout << "Transferencia completada con éxito!" << endl;
                 cout << "Saldo actual: $" << usuarioEnvia->getCuentaCliente().getSaldoCliente() << endl;
                 nuevaTransaccion.setEstadoExitoso("Exitoso");
-            } else {
+            }
+            else
+            {
                 cout << "Error: Fondos insuficientes para realizar la transferencia." << endl;
                 nuevaTransaccion.setEstadoFallido("Fallido");
             }
 
             ListaTransacciones.push_back(nuevaTransaccion); // Agregar transacción a la lista
-        } else {
+        }
+        else
+        {
             cout << "Error: No se puede realizar la transferencia." << endl;
         }
     }
@@ -390,10 +397,17 @@ void MenuUsuario(Banco &banco, Usuarios *usuario, Banco &bancoPrincipal)
             cout << "****Deposito****" << endl;
             cout << "Monto de deposito: ";
             cin >> cantidad;
-
-            banco.ConectarUsuario(cedula); // conecto al usuario al sistema del banco antes de realizar la transaccion
-            banco.RealizarTransaccion(cedula, cantidad, "Deposito");
-            banco.UsuarioDesconectado(cedula); // luego por temas de seguridad lo desconecto
+            if (cantidad >= 0)
+            {
+                banco.ConectarUsuario(cedula); // conecto al usuario al sistema del banco antes de realizar la transaccion
+                banco.RealizarTransaccion(cedula, cantidad, "Deposito");
+                banco.UsuarioDesconectado(cedula); // luego por temas de seguridad lo desconecto
+            }
+            else
+            {
+                cout << "Error: Monto del deposito no puede ser negativo" << endl;
+                break;
+            }
         }
         break;
         case 2:
@@ -402,9 +416,17 @@ void MenuUsuario(Banco &banco, Usuarios *usuario, Banco &bancoPrincipal)
             cout << "***Retiro****" << endl;
             cout << "Monto del retiro: ";
             cin >> cantidad;
-            banco.ConectarUsuario(cedula); // idem con depositar
-            banco.RealizarTransaccion(cedula, cantidad, "Retiro");
-            banco.UsuarioDesconectado(cedula);
+            if (cantidad >= 0)
+            {
+                banco.ConectarUsuario(cedula); // idem con depositar
+                banco.RealizarTransaccion(cedula, cantidad, "Retiro");
+                banco.UsuarioDesconectado(cedula);
+            }
+            else
+            {
+                cout << "Error: Monto a retirar no puede ser negativo" << endl;
+                break;
+            }
         }
         break;
         case 3:
@@ -450,23 +472,30 @@ void MenuUsuario(Banco &banco, Usuarios *usuario, Banco &bancoPrincipal)
             // Pedir monto y confirmar la transferencia
             cout << "Ingrese monto de transferencia: $";
             cin >> cantidad;
-            cout << "***Verifique datos****" << endl;
-            cout << "Nombre Destino: " << usuarioDestino->getName() << endl;
-            cout << "Apellido Destino: " << usuarioDestino->getApellido() << endl;
-            cout << "Tipo y Número de Cuenta: " << tipoCuenta << " " << numeroCuenta << endl;
-            cout << "Monto a transferir: $" << cantidad << endl;
-            cout << "¿Está seguro que los datos son correctos? (yes/no): ";
-            cin >> respuesta;
-
-            if (respuesta == "YES" || respuesta == "yes")
+            if (cantidad >= 0)
             {
-                banco.ConectarUsuario(cedula);
-                banco.RealizarTransferencia(*bancoBeneficiario,cedula, tipoCuenta, numeroCuenta, cantidad);
-                banco.UsuarioDesconectado(cedula);
+                cout << "***Verifique datos****" << endl;
+                cout << "Nombre Destino: " << usuarioDestino->getName() << endl;
+                cout << "Apellido Destino: " << usuarioDestino->getApellido() << endl;
+                cout << "Tipo y Número de Cuenta: " << tipoCuenta << " " << numeroCuenta << endl;
+                cout << "Monto a transferir: $" << cantidad << endl;
+                cout << "¿Está seguro que los datos son correctos? (yes/no): ";
+                cin >> respuesta;
+
+                if (respuesta == "YES" || respuesta == "yes")
+                {
+                    banco.ConectarUsuario(cedula);
+                    banco.RealizarTransferencia(*bancoBeneficiario, cedula, tipoCuenta, numeroCuenta, cantidad);
+                    banco.UsuarioDesconectado(cedula);
+                }
+            }
+            else
+            {
+                cout << "Error: Monto de deposito no pude ser negativo" << endl;
+                break;
             }
         }
         break;
-
         case 4:
             system("clear");
             cout << "Su saldo actual es: $" << usuario->getSaldo() << endl;
@@ -644,6 +673,9 @@ int main()
    **********Problemas Solucionados******************
    -Se soluciono error de Transferencias a bancos diferentes
    -Se soluciono error al logearse con usuarios de bancos diferentes
+  **********Detalles a pulir*************************************
+  -Si el usuario coloca su propia cuenta para las transferencias , debe emitirt un mensaje de error "No se puede transferirse a cuenta propia, dirigirse a deposito",
+  -Modificar la funcion de historial de transacciones pero para que retorne solo las transacciones del usuario actual y no todas las transacciones del banco actual
 
 
 
