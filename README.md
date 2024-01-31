@@ -1,24 +1,25 @@
-# Mini-simple sistema Bancario en C++
+# Mini-Sistema Bancario en C++
 
 ## Descripción
-Este proyecto es un sistema bancario simple implementado en C++ como parte de mi aprendizaje en la programación orientada a objetos (POO). El sistema permite la gestión de clientes y sus transacciones bancarias, como depósitos y retiros, dentro de un banco ficticio.
+Este proyecto representa un sistema bancario simplificado, creado como parte de mi trayectoria de aprendizaje en la programación orientada a objetos (POO) utilizando C++. El sistema simula operaciones bancarias básicas y la gestión de clientes, proporcionando una plataforma para aplicar conceptos fundamentales de POO en un contexto práctico y realista.
 
 ## Características
-- Gestión de clientes a través de cuentas bancarias.
-- Realización de transacciones básicas: depósitos y retiros.
-- Seguimiento del historial de transacciones para cada cliente.
-- Funcionalidad para conectar y desconectar usuarios (simulación de inicio y cierre de sesión).
+- **Gestión de Clientes**: Administración de clientes mediante cuentas bancarias individuales.
+- **Transacciones Bancarias**: Operaciones bancarias como depósitos,retiros y transferencias.
+- **Historial de Transacciones**: Registra y muestra el historial de todas las transacciones realizadas por cada cliente.
+- **Autenticación de Usuarios**: Permite a los usuarios conectarse y desconectarse, simulando un sistema de autenticación.
 
-## Aprendizajes en POO con C++
-- **Encapsulación y Abstracción**: Uso de clases para encapsular y abstraer la lógica bancaria y los detalles del cliente.
-- **Herencia**: Aunque inicialmente se consideró, se descubrió que la herencia no era necesaria para este proyecto.
-- **Polimorfismo**: Implementación de métodos y comportamientos específicos para distintos tipos de transacciones.
-- **Gestión de Memoria**: Manejo cuidadoso de punteros y referencias, especialmente al buscar y actualizar información de clientes.
+## Aprendizajes Clave en POO con C++
+- **Encapsulación y Abstracción**: Empleo de clases para encapsular datos y funciones relacionadas, proporcionando una abstracción clara de las entidades bancarias y los clientes.
+- **Manejo de Complejidades con Punteros**: Profundización en el uso de punteros y referencias para manipular datos y mantener la consistencia en todo el sistema.
+- **Control de Errores y Validaciones**: Desarrollo de habilidades para implementar controles de errores y validaciones, asegurando la robustez y fiabilidad del sistema.
 
-## Desafíos Superados
-- **Manejo de Listas de Objetos**: Aprendí a manejar listas de objetos (`std::vector`) para almacenar y recuperar información de clientes y transacciones.
-- **Debugging**: Mejoré mis habilidades de depuración en C++, especialmente en el rastreo de errores relacionados con la gestión de punteros y la lógica de búsqueda.
-- **Uso de Punteros y Referencias**: Superé desafíos relacionados con el uso correcto de punteros y referencias, asegurando que las modificaciones en objetos se reflejen en toda la aplicación.
-- **Validaciones y Manejo de Errores**: Implementé validaciones y manejo de errores para garantizar la integridad de las transacciones y operaciones de los usuarios.
+## Desafíos y Logros
+- **Gestión de Listas de Objetos**: Utilización efectiva de `std::vector` para manejar dinámicamente las listas de clientes y transacciones.
+- **Transferencias Entre Diferentes Bancos**: Implementación y superación de desafíos asociados con la funcionalidad de transferencias entre cuentas de diferentes bancos, uno de los aspectos más complejos del proyecto.
+- **Debugging Avanzado**: Mejora de las técnicas de depuración para resolver problemas relacionados con la lógica de programación y la gestión de memoria.
+
+## Reflexiones del Proyecto
+Este proyecto fue una oportunidad valiosa para aplicar los principios de POO en un escenario práctico, enfrentando y superando desafíos reales de programación. La funcionalidad de transferencia entre diferentes bancos, en particular, fue un desafío significativo que requería una comprensión profunda de los conceptos de POO y la lógica de programación en C++. Este sistema bancario, aunque simple, representa un paso importante en mi camino hacia una comprensión más profunda de la programación orientada a objetos y el desarrollo de software.
 
 ## Proyecto en proceso
