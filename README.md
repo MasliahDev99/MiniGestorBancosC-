@@ -22,10 +22,10 @@ Este proyecto representa un sistema bancario simplificado, desarrollado como un 
 ## Datos a Considerar
 
 ### Lista de Bancos Inicializados
-- Banco Itaú (Nacional)
-- Banco Santander (Internacional)
-- BBVA (Internacional)
-- Scotiabank (Nacional)
+- Banco Itaú 
+- Banco Santander 
+- BBVA 
+- Scotiabank 
 
 ### Consideraciones Especiales
 - Las transferencias entre diferentes bancos han sido un hito destacado, abordando retos significativos en el manejo de datos y la interacción entre distintas entidades.
