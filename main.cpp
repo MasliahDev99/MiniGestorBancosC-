@@ -3,7 +3,13 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+
 using namespace std;
+
+// colores para los mensajes importantes
+const string rojo = "\033[31m";
+const string verde = "\033[32m";
+const string DEFAULT = "\033[0m";
 
 class CuentaCliente
 {
@@ -130,7 +136,7 @@ public:
                 return &user;
             }
         }
-        cout << "Usuario no encontrado." << endl;
+        cout << rojo << "Usuario no encontrado." << DEFAULT << endl;
         return nullptr;
     }
     Usuarios *getClientePorTipoNumero(string tipo, string numero)
@@ -202,32 +208,32 @@ public:
             { // si el tipo de movimiento es deposito entonces accedo a la cuenta del usuario y ejecuto el metodo de depositar
 
                 usuario->getCuentaCliente().Depositar(monto);
-                cout << "Depósito realizado.\nNuevo saldo: $" << usuario->getCuentaCliente().getSaldoCliente() << endl;
+                cout << verde << "Depósito realizado.\nNuevo saldo: $" << usuario->getCuentaCliente().getSaldoCliente() << DEFAULT << endl;
                 nuevaTransaccion.setEstadoExitoso("Exitoso");
             }
             else if (tipoMovimiento == "Retiro")
             { // en caso de Retiro verifico que el usuario tenga los fondos suficientes en su cuenta, si da true entonces se realiza la transaccion
                 if (usuario->getCuentaCliente().Retirar(monto))
                 {
-                    cout << "Retiro realizado. Nuevo saldo: $" << usuario->getCuentaCliente().getSaldoCliente() << endl;
+                    cout << verde << "Retiro realizado. Nuevo saldo: $" << usuario->getCuentaCliente().getSaldoCliente() << DEFAULT << endl;
                     nuevaTransaccion.setEstadoExitoso("Exitoso");
                 }
                 else
                 { // si da false entonces , el usuario no cuenta con los fondos necesarios
-                    cout << "Error: Fondos insuficientes para el retiro." << endl;
+                    cout << rojo << "Error: Fondos insuficientes para el retiro." << DEFAULT << endl;
                     nuevaTransaccion.setEstadoFallido("Fallido");
                 }
             }
             else
             {
-                cout << "Error: Tipo de transacción desconocido." << endl;
+                cout << rojo << "Error: Tipo de transacción desconocido." << DEFAULT << endl;
                 nuevaTransaccion.setEstadoFallido("Fallido");
             }
             ListaTransacciones.push_back(nuevaTransaccion); // agrego a la lista la nueva transaccion
         }
         else
         {
-            cout << "Error: El usuario no está conectado o no existe." << endl;
+            cout << rojo << "Error: El usuario no está conectado o no existe." << DEFAULT << endl;
         }
     }
     void RealizarTransferencia(Banco &bancoBeneficiario, int cedulaOrigen, string tipoCuenta, string numeroCuenta, int montoTransferir)
@@ -244,13 +250,13 @@ public:
             if (usuarioEnvia->getCuentaCliente().Retirar(montoTransferir))
             {
                 beneficiario->getCuentaCliente().Depositar(montoTransferir);
-                cout << "Transferencia completada con éxito!" << endl;
-                cout << "Saldo actual: $" << usuarioEnvia->getCuentaCliente().getSaldoCliente() << endl;
+                cout << verde << "Transferencia completada con éxito!" << endl;
+                cout << "Saldo actual: $" << usuarioEnvia->getCuentaCliente().getSaldoCliente() << DEFAULT << endl;
                 nuevaTransaccion.setEstadoExitoso("Exitoso");
             }
             else
             {
-                cout << "Error: Fondos insuficientes para realizar la transferencia." << endl;
+                cout << rojo << "Error: Fondos insuficientes para realizar la transferencia." << DEFAULT << endl;
                 nuevaTransaccion.setEstadoFallido("Fallido");
             }
 
@@ -258,7 +264,7 @@ public:
         }
         else
         {
-            cout << "Error: No se puede realizar la transferencia." << endl;
+            cout << rojo << "Error: No se puede realizar la transferencia." << DEFAULT << endl;
         }
     }
 
@@ -270,9 +276,9 @@ public:
                  << ", Monto: " << transaccion.getMonto()
                  << ", Tipo transaccion: " << transaccion.getTipoTransaccion();
             if (transaccion.getEstado() == "Exitoso")
-                cout << " ,Estado: Exitoso" << endl;
+                cout << verde << " ,Estado: Exitoso" << DEFAULT << endl;
             else
-                cout << " ,Estado: Fallido" << endl;
+                cout << rojo << " ,Estado: Fallido" << DEFAULT << endl;
         }
     }
 
@@ -287,7 +293,7 @@ public:
         }
         else
         {
-            cout << " El usuario no ha sido encontrado... " << endl;
+            cout << rojo << " El usuario no ha sido encontrado... " << DEFAULT << endl;
         }
     }
     void UsuarioDesconectado(int cedula)
@@ -339,7 +345,7 @@ public:
     {
         if (Lista_Bancos.empty())
         {
-            cout << "No hay Bancos cargados..." << endl;
+            cout << rojo << "No hay Bancos cargados..." << DEFAULT << endl;
             return;
         }
         else
@@ -379,10 +385,10 @@ void MenuUsuario(Banco &banco, Usuarios *usuario, Banco &bancoPrincipal)
     Banco banco2;
     do
     {
-        cout << "Bienvenido, " << usuario->getName() << endl;
+        cout << "Usuario actual (" << usuario->getName() <<") "<< endl;
         cout << "1 - Depositar" << endl;
         cout << "2 - Retirar" << endl;
-        cout << "3-  Transferencia" << endl;
+        cout << "3 - Transferencia" << endl;
         cout << "4 - Mostrar Saldo" << endl;
         cout << "5 - Ver Historial de Transacciones" << endl;
         cout << "6 - Desconectar" << endl;
@@ -405,7 +411,7 @@ void MenuUsuario(Banco &banco, Usuarios *usuario, Banco &bancoPrincipal)
             }
             else
             {
-                cout << "Error: Monto del deposito no puede ser negativo" << endl;
+                cout << rojo << "Error: Monto del deposito no puede ser negativo" << DEFAULT << endl;
                 break;
             }
         }
@@ -424,7 +430,7 @@ void MenuUsuario(Banco &banco, Usuarios *usuario, Banco &bancoPrincipal)
             }
             else
             {
-                cout << "Error: Monto a retirar no puede ser negativo" << endl;
+                cout << rojo << "Error: Monto a retirar no puede ser negativo" << DEFAULT << endl;
                 break;
             }
         }
@@ -440,7 +446,7 @@ void MenuUsuario(Banco &banco, Usuarios *usuario, Banco &bancoPrincipal)
             Banco *bancoBeneficiario = bancoPrincipal.getBanco(nombre_Banco);
             if (bancoBeneficiario == nullptr)
             {
-                cout << "Error: El banco ingresado no existe." << endl;
+                cout << rojo << "Error: El banco ingresado no existe." << DEFAULT << endl;
                 break;
             }
 
@@ -454,7 +460,7 @@ void MenuUsuario(Banco &banco, Usuarios *usuario, Banco &bancoPrincipal)
                                                                     : "";
             if (tipoCuenta.empty())
             {
-                cout << "Error: opción no válida." << endl;
+                cout << rojo << "Error: opción no válida." << DEFAULT << endl;
                 break;
             }
 
@@ -465,7 +471,7 @@ void MenuUsuario(Banco &banco, Usuarios *usuario, Banco &bancoPrincipal)
             Usuarios *usuarioDestino = bancoBeneficiario->getClientePorTipoNumero(tipoCuenta, numeroCuenta);
             if (usuarioDestino == nullptr)
             {
-                cout << "Error: La cuenta destino no existe en el banco indicado." << endl;
+                cout << rojo << "Error: La cuenta destino no existe en el banco indicado." << DEFAULT << endl;
                 break;
             }
 
@@ -491,14 +497,14 @@ void MenuUsuario(Banco &banco, Usuarios *usuario, Banco &bancoPrincipal)
             }
             else
             {
-                cout << "Error: Monto de deposito no pude ser negativo" << endl;
+                cout << rojo << "Error: Monto de deposito no pude ser negativo" << DEFAULT << endl;
                 break;
             }
         }
         break;
         case 4:
             system("clear");
-            cout << "Su saldo actual es: $" << usuario->getSaldo() << endl;
+            cout << verde << "Su saldo actual es: $" << usuario->getSaldo() << DEFAULT << endl;
             break;
         case 5:
             system("clear");
@@ -546,7 +552,7 @@ void MenuPrincipal(Banco &banco)
 
             if (bancoEncontrado == nullptr)
             {
-                cout << "Banco no encontrado. Por favor, intente de nuevo." << endl;
+                cout <<rojo << "Banco no encontrado. Por favor, intente de nuevo."<< DEFAULT << endl;
                 break;
             }
             else
@@ -562,7 +568,7 @@ void MenuPrincipal(Banco &banco)
                 // Verificación de la cédula y el número de cuenta
                 if (bancoEncontrado->ExisteCedula(cedula))
                 {
-                    cout << "Error: Ya existe un usuario con esta cédula." << endl;
+                    cout << rojo << "Error: Ya existe un usuario con esta cédula."<<DEFAULT << endl;
                     break;
                 }
                 cout << "Ingrese una contraseña para su cuenta: ";
@@ -578,7 +584,7 @@ void MenuPrincipal(Banco &banco)
 
                 if (tipoCuenta.empty())
                 {
-                    cout << "Error: opción no válida" << endl;
+                    cout << rojo << "Error: opción no válida" <<DEFAULT << endl;
                     break;
                 }
 
@@ -586,7 +592,7 @@ void MenuPrincipal(Banco &banco)
                 cin >> numeroCuenta;
                 if (bancoEncontrado->ExisteNumeroCuenta(numeroCuenta))
                 {
-                    cout << "Error: Ya existe un número de cuenta similar." << endl;
+                    cout << rojo << "Error: Ya existe un número de cuenta similar."<<DEFAULT << endl;
                     break;
                 }
 
@@ -594,20 +600,23 @@ void MenuPrincipal(Banco &banco)
                 Usuarios nuevoUsuario(nombre, apellido, cedula, cuenta, pass);
                 bancoEncontrado->AltaUsuario(nuevoUsuario);
                 system("clear");
-                cout << "Usuario creado exitosamente" << endl;
+                cout <<" ------------------------------------------" << endl;
+                cout << verde << "Usuario creado exitosamente" << endl;
                 // Imprimir detalles del usuario
-                cout << "\nDetalles del Usuario Creado:" << endl;
+                cout << "Detalles del Usuario Creado:" << endl;
                 cout << "Nombre: " << nuevoUsuario.getName() << endl;
                 cout << "Apellido: " << nuevoUsuario.getApellido() << endl;
                 cout << "Cedula: " << nuevoUsuario.getCedula() << endl;
                 cout << "Contraseña: " << pass << " (Mantenga su contraseña segura)" << endl;
-
+                
                 // Detalles de la cuenta bancaria
                 CuentaCliente cuentaUsuario = nuevoUsuario.getCuentaCliente();
                 cout << "Datos de Cuenta Bancaria:" << endl;
+                cout <<" Banco: " << bancoEncontrado->getNombreBanco() << endl;
                 cout << "Tipo de Cuenta: " << cuentaUsuario.getTipoCuenta() << endl;
                 cout << "Número de Cuenta: " << cuentaUsuario.getNumeroCuenta() << endl;
-                cout << "Saldo Inicial: $" << cuentaUsuario.getSaldoCliente() << endl;
+                cout << "Saldo Inicial: $" << cuentaUsuario.getSaldoCliente() <<DEFAULT << endl;
+                cout << "----------------------------------------------------------------" << endl;
                 break;
             }
         }
