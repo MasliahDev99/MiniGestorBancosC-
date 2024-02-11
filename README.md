@@ -29,7 +29,7 @@ Este proyecto representa un sistema bancario simplificado, desarrollado como un 
 
 ### Consideraciones Especiales
 - Las transferencias entre diferentes bancos han sido un hito destacado, abordando retos significativos en el manejo de datos y la interacción entre distintas entidades.
-- La seguridad y la autenticación se simulan en este contexto educativo, pero subrayan la importancia de estas áreas en aplicaciones reales.
+
 
 ### Futuras Mejoras
 - **Interfaz Gráfica de Usuario (GUI)**: Para mejorar la accesibilidad y la experiencia del usuario.
